@@ -1,0 +1,141 @@
+<html>
+
+<style type="text/css">
+div.container {
+	height: 10em;
+	position: relative }              /* 1 */
+
+div.container pre {
+	margin: 0;
+	position: absolute;               /* 2 */
+	left: 50%;
+	transform: translate(-50%, 20%) }   /* 4 */
+
+a {
+	color: inherit;
+	text-decoration: inherit }
+
+li {
+	margin-bottom: 13px	}
+
+mark {
+	background-color: #D7DBE6;
+}
+
+</style>
+
+<script type="text/javascript">
+
+
+function generatehideout(){
+	//console.clear()
+	var patternLines = document.getElementById("pattern").value.split("\n")	//one hideoutobject per line
+	//console.log(patternLines)
+	var xstart = parseInt(document.getElementById("x-start").value)
+	var ystart = parseInt(document.getElementById("y-start").value)
+	var xend = parseInt(document.getElementById("x-end").value)
+	var yend = parseInt(document.getElementById("y-end").value)
+	var useroffsetX = parseInt(document.getElementById("x-pad").value)
+	var useroffsetY = parseInt(document.getElementById("x-pad").value)
+
+
+
+	var patternXoffset = []
+	var patternYoffset = []
+
+	var minXref = 0
+	var minYref = 0
+
+	for(var i = 0; i<patternLines.length; i++){//find smallest x and y values and store index
+		if(patternLines[i].split(",")[1].slice(3) < patternLines[minXref].split(",")[1].slice(3)){
+		minXref = i
+	  }
+	  if(patternLines[i].split(",")[2].slice(3) < patternLines[minYref].split(",")[2].slice(3)){
+		minYref = i
+	  }
+	}
+
+	for(var i = 0; i<patternLines.length; i++){//create object offsets
+		patternXoffset[i] = patternLines[i].split(",")[1].slice(3) - patternLines[minXref].split(",")[1].slice(3)
+		patternYoffset[i] = patternLines[i].split(",")[2].slice(3) - patternLines[minYref].split(",")[2].slice(3)
+	}
+	//console.log("x offsets: " + patternXoffset)
+	//console.log("y offsets: " + patternYoffset)
+
+
+	var tilesizex = (Math.max(...patternXoffset) + useroffsetX) //adjust tiling size
+	var tilesizey = (Math.max(...patternYoffset) + useroffsetY)
+	//console.log("tilesize is x:" + tilesizex + " y:" + tilesizey)
+	var lines = ""
+
+	//create hideout text
+	for(var i = xstart; i>xend; i=i-tilesizex){//x
+		for(var j = ystart; j>yend; j=j-tilesizey){//y
+			for(var k = 0; k<patternLines.length; k++){
+		 splitPattern = patternLines[k].split(",")
+		 lines += splitPattern[0] + ", X=" + (i + patternXoffset[k]) + ", Y=" + (j + patternYoffset[k]) + "," + splitPattern[3] + "," + splitPattern[4] + "," + splitPattern[5] + "\n"
+		 }
+		}
+	}
+
+	//console.log(lines)
+	document.getElementById("output").value = lines
+	document.getElementById("output").select()
+	document.execCommand('copy')
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+<body bgcolor="#747E89">
+<title>Hideout Decoration Tiler</title>
+<DIV class="container">
+<pre>
+<font face="Courier New, Courier, mono" color="#D7DBE6">
+
+<center><a href="index.php">home</a></center>
+<br>
+<center><mark>hideout decoration tiler</mark></center>
+<br>
+
+X Start Location: <input type="text" id="x-start" value="400">  Y Start Location: <input type="text" id="y-start" value="400"><br>
+X End Location:   <input type="text" id="x-end" value="200">  Y End Location:   <input type="text" id="y-end" value="200"><br>
+X Padding:        <input type="text" id="x-pad" value="10">  Y Padding:        <input type="text" id="y-pad" value="0"><br>
+Input Pattern:
+<textarea id="pattern" rows="8" cols="78">
+Vaal Block = { Hash=607186339, X=401, Y=416, Rot=32768, Flip=0, Var=8 }
+Vaal Block = { Hash=607186339, X=409, Y=400, Rot=32767, Flip=0, Var=7 }
+Vaal Block = { Hash=607186339, X=409, Y=424, Rot=0, Flip=0, Var=7 }
+Vaal Block = { Hash=607186339, X=417, Y=408, Rot=32767, Flip=0, Var=8 }
+</textarea><br>
+<button onclick="generatehideout()">Generate & Copy to Clipboard</button><br>
+Output:
+<textarea id="output" rows="8" cols="78">
+Press 'generate' to create a tiled version of your pattern which fills the selected area.
+</textarea><br>
+
+
+</form>
+
+
+
+
+
+
+</font>
+</pre>
+
+
+
+</DIV>
+
+</body>
+
+</html>
