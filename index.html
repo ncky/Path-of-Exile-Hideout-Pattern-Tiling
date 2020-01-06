@@ -31,8 +31,6 @@ function generatehideout(){
 	var useroffsetX = parseInt(document.getElementById("x-pad").value)
 	var useroffsetY = parseInt(document.getElementById("x-pad").value)
 
-
-
 	var patternXoffset = []
 	var patternYoffset = []
 
@@ -55,7 +53,6 @@ function generatehideout(){
 	//console.log("x offsets: " + patternXoffset)
 	//console.log("y offsets: " + patternYoffset)
 
-
 	var tilesizex = (Math.max(...patternXoffset) + useroffsetX) //adjust tiling size
 	var tilesizey = (Math.max(...patternYoffset) + useroffsetY)
 	//console.log("tilesize is x:" + tilesizex + " y:" + tilesizey)
@@ -75,17 +72,9 @@ function generatehideout(){
 	document.getElementById("output").value = lines
 	document.getElementById("output").select()
 	document.execCommand('copy')
-
-
 }
 
-
-
 </script>
-
-
-
-
 
 <body bgcolor="#747E89">
 <title>Hideout Decoration Tiler</title>
@@ -114,15 +103,8 @@ Press 'generate' to create a tiled version of your pattern which fills the selec
 
 </form>
 
-
-
-
-
-
 </font>
 </pre>
-
-
 
 </DIV>
 
